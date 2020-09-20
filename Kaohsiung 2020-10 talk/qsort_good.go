@@ -1,6 +1,9 @@
 package qsort
 
-import "sync"
+import (
+	"runtime"
+	"sync"
+)
 
 func qsortGoodWorker(inputCh chan []int, wg *sync.WaitGroup, remainingTaskNum *sync.WaitGroup) {
 	defer wg.Done()
@@ -24,16 +27,15 @@ func qsortGoodWorker(inputCh chan []int, wg *sync.WaitGroup, remainingTaskNum *s
 	}
 }
 
-// WARNING: this qsortGood is for demo only, not for practice production usage.
+// WARNING: this qsortGood is for demo only, not for production usage.
+// The actual performance of qsortGood is MUCH worse than the standard library
 func qsortGood(input []int) {
 	wg := sync.WaitGroup{}
 	remainingTaskNum := sync.WaitGroup{}
 
-	numOfThreads := 4
-
 	inputCh := make(chan []int, len(input)/2+1)
-	wg.Add(numOfThreads)
-	for i := 0; i < numOfThreads; i++ {
+	wg.Add(runtime.NumCPU())
+	for i := 0; i < runtime.NumCPU(); i++ {
 		go qsortGoodWorker(inputCh, &wg, &remainingTaskNum)
 	}
 
