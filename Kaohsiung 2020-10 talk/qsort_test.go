@@ -43,3 +43,13 @@ func TestQsortGood(t *testing.T) {
 		t.Error("the sorting is buggy", array)
 	}
 }
+
+func BenchmarkQsortBad(b *testing.B) {
+	array := generateRandomSlice(10000000)
+	qsortBad(array)
+}
+
+func BenchmarkQsortGood(b *testing.B) {
+	array := generateRandomSlice(10000000)
+	qsortGood(array)
+}
