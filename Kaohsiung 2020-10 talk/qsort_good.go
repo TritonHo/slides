@@ -24,13 +24,14 @@ func qsortGoodWorker(inputCh chan []int, wg *sync.WaitGroup, remainingTaskNum *s
 	}
 }
 
+// WARNING: this qsortGood is for demo only, not for practice production usage.
 func qsortGood(input []int) {
 	wg := sync.WaitGroup{}
 	remainingTaskNum := sync.WaitGroup{}
 
 	numOfThreads := 4
 
-	inputCh := make(chan []int, 100)
+	inputCh := make(chan []int, len(input)/2+1)
 	wg.Add(numOfThreads)
 	for i := 0; i < numOfThreads; i++ {
 		go qsortGoodWorker(inputCh, &wg, &remainingTaskNum)
